@@ -1,0 +1,42 @@
+
+import nltk
+from nltk.tokenize import sent_tokenize, word_tokenize
+from nltk.corpus import stopwords
+import re
+
+def extract_information(text):
+    # Разбиваем текст на предложения и слова
+    sentences = sent_tokenize(text)
+    words = [word.lower() for word in word_tokenize(text) if word.isalnum()]
+   
+    # Удаляем стоп-слова (предлоги, союзы и т.д.)
+    stop_words = set(stopwords.words('english'))
+    filtered_words = [word for word in words if word not in stop_words]
+   
+    # Извлекаем числа из текста
+    numbers = re.findall(r'\d+', text)
+   
+    # Извлекаем email-адреса из текста
+    emails = re.findall(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', text)
+   
+    return sentences, filtered_words, numbers, emails
+
+# Пример текста для анализа
+text = "Python is an interpreted high-level programming language. It was created by Guido van Rossum. Email me at test@example.com with any questions."
+
+# Извлекаем нужную информацию из текста
+sentences, filtered_words, numbers, emails = extract_information(text)
+
+# Выводим извлеченные данные
+print("Предложения в тексте:")
+for sentence in sentences:
+    print(sentence)
+
+print("\nОтфильтрованные слова:")
+print(filtered_words)
+
+print("\nЧисла в тексте:")
+print(numbers)
+
+print("\nEmail-адреса в тексте:")
+print(emails)
